@@ -18,9 +18,9 @@ public class TestDeposit {
 	@Test
 	public void test1945To2019() {
 		// 從二戰存錢到現在
-		when(userA.depositAmount()).thenReturn(10000);
-		when(userA.depositInterest(gt(2000))).thenReturn(0.08);
-		when(userA.depositInterest(leq(2000))).thenReturn(0.02);
+		when(userA.depositAmount()).thenReturn(10000); //A 存10K
+		when(userA.depositInterest(gt(2000))).thenReturn(0.08); //2000
+		when(userA.depositInterest(leq(2000))).thenReturn(0.02); //2000之前利率
 		when(userA.expireEra()).thenReturn("令和");
 		when(userA.expireYear()).thenReturn(1);
 
@@ -33,9 +33,12 @@ public class TestDeposit {
 	public void test1949To1989() {
 		// 從1949存錢到昭和64, 存198178
 		// 利率都是3%
-		double expected = 0;
+		double expected = (198178*Math.pow(1+0.03,40));
 
-		// when...
+		when(userA.depositAmount()).thenReturn(198178);
+		when(userA.depositInterest(anyInt())).thenReturn(0.03);
+		when(userA.expireEra()).thenReturn("昭和");
+		when(userA.expireYear()).thenReturn(64);
 
 		Deposit deposit = new Deposit(1949);
 		String result = deposit.deposit(userA);
